@@ -1,0 +1,9 @@
+<network>
+    <osmFile>../data/osm/finland-latest.osm.pbf</osmFile>
+    <outputNetworkFile>../data/matsim/network.xml</outputNetworkFile>
+
+    <!-- Additional flags -->
+    <inferSpeed>true</inferSpeed>
+    <inferLanes>true</inferLanes>
+    <keepPaths>true</keepPaths>
+</network>

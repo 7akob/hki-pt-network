@@ -3,27 +3,25 @@ import geopandas as gpd
 from shapely.geometry import Point
 import os
 
-GTFS_DIR = "../data/gtfs/"
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+GTFS_DIR = os.path.join(BASE_DIR, "data", "gtfs")
+INTERMEDIATE_DIR = os.path.join(BASE_DIR, "data", "intermediate")
 
-stops = pd.read_csv(GTFS_DIR + "stops.txt")
-routes = pd.read_csv(GTFS_DIR + "routes.txt")
-trips = pd.read_csv(GTFS_DIR + "trips.txt")
-stop_times = pd.read_csv(GTFS_DIR + "stop_times.txt")
-shapes = pd.read_csv(GTFS_DIR + "shapes.txt")
-calendar = pd.read_csv(GTFS_DIR + "calendar.txt")
-calendar_dates = pd.read_csv(GTFS_DIR + "calendar_dates.txt")
+os.makedirs(INTERMEDIATE_DIR, exist_ok=True)
 
-# --- convert stops to GeoDataFrame ---
-gdf_stops = gpd.GeoDataFrame(
-    stops,
-    geometry=[Point(xy) for xy in zip(stops.stop_lon, stops.stop_lat)],
-    crs="EPSG:4326"
-)
+# Load GTFS stops
+stops = pd.read_csv(os.path.join(GTFS_DIR, "stops.txt"))
 
-# ensure intermediate folder exists
-os.makedirs("../data/intermediate", exist_ok=True)
+# Ensure required columns exist
+if not {"stop_lat", "stop_lon"}.issubset(stops.columns):
+    raise ValueError("GTFS stops.txt is missing stop_lat or stop_lon columns!")
 
-# save GTFS stops as geojson (used by script 3)
-gdf_stops.to_file("../data/intermediate/gtfs_stops.geojson", driver="GeoJSON")
+# Create GeoDataFrame (WGS84)
+geometry = [Point(lon, lat) for lon, lat in zip(stops.stop_lon, stops.stop_lat)]
+gdf_stops = gpd.GeoDataFrame(stops, geometry=geometry, crs="EPSG:4326")
 
-print("Saved to ../data/intermediate/gtfs_stops.geojson")
+# Save GeoJSON
+outpath = os.path.join(INTERMEDIATE_DIR, "gtfs_stops.geojson")
+gdf_stops.to_file(outpath, driver="GeoJSON")
+
+print("Saved:", outpath, "with", len(gdf_stops), "features")

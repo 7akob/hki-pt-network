@@ -1,0 +1,36 @@
+<config>
+
+  <!-- Network -->
+  <module name="network">
+      <param name="inputNetworkFile" value="../data/matsim/network.xml" />
+  </module>
+
+  <!-- Transit -->
+  <module name="transit">
+      <param name="useTransit" value="true" />
+      <param name="transitScheduleFile" value="../data/matsim/transitSchedule.xml" />
+      <param name="vehiclesFile" value="../data/matsim/transitVehicles.xml" />
+  </module>
+
+  <!-- Population (you add this later when generating agents) -->
+  <module name="plans">
+      <param name="inputPlansFile" value="../data/matsim/population.xml" />
+  </module>
+
+  <!-- Simulation settings -->
+  <module name="qsim">
+      <param name="flowCapacityFactor" value="1.0" />
+      <param name="storageCapacityFactor" value="1.0" />
+      <param name="startTime" value="06:00:00"/>
+      <param name="endTime" value="22:00:00"/>
+      <param name="mainMode" value="car,pt,walk" />
+  </module>
+
+  <!-- Controller -->
+  <module name="controler">
+      <param name="firstIteration" value="0" />
+      <param name="lastIteration" value="10" />
+      <param name="outputDirectory" value="../output/helsinki_run/" />
+  </module>
+
+</config>
