@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+  <!-- FILE LOCATIONS -->
+  <inputFiles>
+    <networkFile>network.xml</networkFile>
+    <transitScheduleFile>transitSchedule.xml</transitScheduleFile>
+    <transitVehiclesFile>transitVehicles.xml</transitVehiclesFile>
+    <plansFile>population.xml</plansFile>
+  </inputFiles>
+
+  <!-- TRANSIT ACTIVATION -->
+  <modules>
+    <module name="transit">
+      <param name="useTransit" value="true"/>
+    </module>
+
+    <!-- SIMULATION SETTINGS -->
+    <module name="qsim">
+      <!-- Run long enough so late agents finish -->
+      <param name="endTime" value="30:00:00"/>
+      <param name="numberOfThreads" value="4"/>
+      <param name="flowCapacityFactor" value="1.0"/>
+      <param name="storageCapacityFactor" value="1.0"/>
+    </module>
+
+    <!-- ROUTING -->
+    <module name="strategy">
+      <param name="maxAgentPlanMemorySize" value="1"/>
+    </module>
+
+    <!-- CONTROL LOOP -->
+    <module name="controler">
+      <!-- only run one iteration -->
+      <param name="lastIteration" value="0"/>
+      <param name="outputDirectory" value="output"/>
+      <param name="writeEventsInterval" value="1"/>
+      <param name="writePlansInterval" value="1"/>
+    </module>
+  </modules>
+
+</config>
