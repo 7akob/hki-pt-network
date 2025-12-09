@@ -12,7 +12,7 @@
     </module>
 
     <module name="transit">
-        <param name="useTransit" value="true"/>
+        <param name="useTransit" value="false"/>
         <param name="transitScheduleFile" value="transitSchedule.xml"/>
         <param name="vehiclesFile" value="transitVehicles.xml"/>
     </module>
@@ -30,9 +30,20 @@
         <param name="endTime" value="30:00:00"/>
     </module>
 
-    <!-- Your MATSim build ONLY supports this old parameter -->
-    <module name="planscalcroute">
-        <param name="teleportedModeSpeed" value="1.2" />
-    </module>
+    <module name="scoring">
+  <!-- Home activity -->
+  <parameterset type="activityParams">
+    <param name="activityType" value="home" />
+    <!-- typical duration people "like" to stay at home -->
+    <param name="typicalDuration" value="12:00:00" />
+  </parameterset>
+
+  <!-- Work activity -->
+  <parameterset type="activityParams">
+    <param name="activityType" value="work" />
+    <!-- typical duration of work -->
+    <param name="typicalDuration" value="08:00:00" />
+  </parameterset>
+</module>
 
 </config>
