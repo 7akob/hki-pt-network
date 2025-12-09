@@ -1,42 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE config SYSTEM "http://www.matsim.org/files/dtd/config_v2.dtd">
+
 <config>
 
-  <!-- FILE LOCATIONS -->
-  <inputFiles>
-    <networkFile>network.xml</networkFile>
-    <transitScheduleFile>transitSchedule.xml</transitScheduleFile>
-    <transitVehiclesFile>transitVehicles.xml</transitVehiclesFile>
-    <plansFile>population.xml</plansFile>
-  </inputFiles>
+    <module name="global">
+        <param name="coordinateSystem" value="WGS84"/>
+    </module>
 
-  <!-- TRANSIT ACTIVATION -->
-  <modules>
+    <module name="network">
+        <param name="inputNetworkFile" value="network.xml"/>
+    </module>
+
     <module name="transit">
-      <param name="useTransit" value="true"/>
+        <param name="useTransit" value="true"/>
+        <param name="transitScheduleFile" value="transitSchedule.xml"/>
+        <param name="vehiclesFile" value="transitVehicles.xml"/>
     </module>
 
-    <!-- SIMULATION SETTINGS -->
+    <module name="plans">
+        <param name="inputPlansFile" value="population.xml"/>
+    </module>
+
+    <module name="controller">
+        <param name="outputDirectory" value="./output"/>
+        <param name="lastIteration" value="0"/>
+    </module>
+
     <module name="qsim">
-      <!-- Run long enough so late agents finish -->
-      <param name="endTime" value="30:00:00"/>
-      <param name="numberOfThreads" value="4"/>
-      <param name="flowCapacityFactor" value="1.0"/>
-      <param name="storageCapacityFactor" value="1.0"/>
+        <param name="endTime" value="30:00:00"/>
     </module>
 
-    <!-- ROUTING -->
-    <module name="strategy">
-      <param name="maxAgentPlanMemorySize" value="1"/>
+    <!-- Your MATSim build ONLY supports this old parameter -->
+    <module name="planscalcroute">
+        <param name="teleportedModeSpeed" value="1.2" />
     </module>
-
-    <!-- CONTROL LOOP -->
-    <module name="controler">
-      <!-- only run one iteration -->
-      <param name="lastIteration" value="0"/>
-      <param name="outputDirectory" value="output"/>
-      <param name="writeEventsInterval" value="1"/>
-      <param name="writePlansInterval" value="1"/>
-    </module>
-  </modules>
 
 </config>

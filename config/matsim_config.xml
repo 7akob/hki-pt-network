@@ -1,0 +1,16 @@
+<config>
+  <input>
+    <networkFile>../matsim_input/network.xml</networkFile>
+    <plansFile>../matsim_input/population.xml</plansFile>
+    <transitScheduleFile>../matsim_input/transitSchedule.xml</transitScheduleFile>
+    <vehiclesFile>../matsim_input/vehicles.xml</vehiclesFile>
+  </input>
+
+  <qsim>
+    <useTransit>true</useTransit>
+  </qsim>
+
+  <planscalcroute>
+    <teleportedModeSpeed mode="walk" speed="1.4"/>
+  </planscalcroute>
+</config>

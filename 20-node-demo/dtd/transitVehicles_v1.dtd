@@ -1,0 +1,34 @@
+<!-- MATSim Transit Vehicles DTD v1 -->
+<!ELEMENT vehicleDefinitions (vehicleType*, vehicles?)>
+
+<!ELEMENT vehicleType (capacity, length?, width?, accessTime?, egressTime?, doorOperation?, engine?)>
+<!ATTLIST vehicleType id ID #REQUIRED>
+
+<!ELEMENT capacity EMPTY>
+<!ATTLIST capacity seats CDATA #REQUIRED
+                 standingRoom CDATA #IMPLIED>
+
+<!ELEMENT length EMPTY>
+<!ATTLIST length meter CDATA #REQUIRED>
+
+<!ELEMENT width EMPTY>
+<!ATTLIST width meter CDATA #REQUIRED>
+
+<!ELEMENT accessTime EMPTY>
+<!ATTLIST accessTime secondsPerPerson CDATA #REQUIRED>
+
+<!ELEMENT egressTime EMPTY>
+<!ATTLIST egressTime secondsPerPerson CDATA #REQUIRED>
+
+<!ELEMENT doorOperation EMPTY>
+<!ATTLIST doorOperation mode CDATA #REQUIRED>
+
+<!ELEMENT engine EMPTY>
+<!ATTLIST engine fuelType CDATA #REQUIRED
+                consumption CDATA #IMPLIED>
+
+<!ELEMENT vehicles (vehicle*)>
+
+<!ELEMENT vehicle EMPTY>
+<!ATTLIST vehicle id ID #REQUIRED
+                   type IDREF #REQUIRED>

@@ -1,34 +1,42 @@
-import subprocess
-import os
-import pathlib
+import osmnx as ox
+from lxml import etree
 
-BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
-MATSim_JAR = BASE_DIR / "matsim" / "matsim.jar"
-OSM_FILE = BASE_DIR / "data" / "osm" / "finland-latest.osm.pbf"
-OUTPUT_NETWORK = BASE_DIR / "data" / "matsim" / "network.xml"
+INPUT = "../data/osm/helsinki_drive.graphml"
+OUTPUT = "../matsim_input/network.xml"
 
-JAVA = r"C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot\bin\java.exe"
+G = ox.load_graphml(INPUT)
 
-os.makedirs(os.path.dirname(OUTPUT_NETWORK), exist_ok=True)
+def write_matsim_network(G, out_file):
+    network = etree.Element("network")
+    nodes_el = etree.SubElement(network, "nodes")
+    links_el = etree.SubElement(network, "links")
 
-# --- Build correct Java command ---
-CMD = [
-    JAVA,
-    "-cp", str(MATSim_JAR),
-    "org.matsim.application.prepare.network.PrepareOSMNetwork",
-    "--osm", str(OSM_FILE),
-    "--output", str(OUTPUT_NETWORK),
-    "--keepPaths",
-    "--inferLanes",
-    "--inferSpeeds"
-]
+    # Nodes
+    for node_id, data in G.nodes(data=True):
+        etree.SubElement(
+            nodes_el, "node",
+            id=str(node_id),
+            x=str(data["x"]),
+            y=str(data["y"])
+        )
 
-print("Running MATSim network converter...")
-print(" ".join(CMD))
+    # Links
+    link_id = 0
+    for u, v, data in G.edges(data=True):
+        etree.SubElement(
+            links_el, "link",
+            id=str(link_id),
+            from_=str(u),
+            to=str(v),
+            length=str(data.get("length", 30)),
+            freespeed=str(data.get("speed_kph", 40) / 3.6),
+            capacity="1000",
+            permlanes="1"
+        )
+        link_id += 1
 
-result = subprocess.run(CMD, capture_output=True, text=True)
+    with open(out_file, "wb") as f:
+        f.write(etree.tostring(network, pretty_print=True))
 
-print("\n--- STDOUT ---")
-print(result.stdout)
-print("\n--- STDERR ---")
-print(result.stderr)
+write_matsim_network(G, OUTPUT)
+print("Created network.xml")
